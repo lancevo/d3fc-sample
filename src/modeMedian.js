@@ -20,15 +20,17 @@ export default function() {
 
             var frequencies = {};
             var mostFrequent;
-            var mostFrequentIndex;
             var singleMostFrequent = true;
 
-            for (var j = 0; j < thisBucket.length; j++) {
-                var item = value(thisBucket[j]);
-                if (item === minMax[0] || item === minMax[1]) {
-                    return thisBucket[j];
-                }
+            var values = thisBucket.map(value);
+            var globalMinMax = values.filter((item) => {
+                return item === minMax[0] || item === minMax[1];
+            })[0];
+            if (globalMinMax !== undefined) {
+                return globalMinMax;
+            }
 
+            values.forEach((item) => {
                 if (frequencies[item] === undefined) {
                     frequencies[item] = 0;
                 }
@@ -36,15 +38,14 @@ export default function() {
 
                 if (frequencies[item] > frequencies[mostFrequent] || mostFrequent === undefined) {
                     mostFrequent = item;
-                    mostFrequentIndex = j;
                     singleMostFrequent = true;
                 } else if (frequencies[item] === frequencies[mostFrequent]) {
                     singleMostFrequent = false;
                 }
-            }
+            });
 
             if (singleMostFrequent) {
-                return thisBucket[mostFrequentIndex];
+                return mostFrequent;
             } else {
                 return thisBucket[Math.floor(thisBucket.length / 2)];
             }
