@@ -1,3 +1,5 @@
+import d3 from 'd3';
+
 export default function() {
 
     var bucketSize = 10;
@@ -5,11 +7,9 @@ export default function() {
     var bucket = function(data) {
         var numberOfBuckets = Math.ceil(data.length / bucketSize);
 
-        var buckets = [];
-        for (var i = 0; i < numberOfBuckets; i++) {
-            buckets.push(data.slice(i * bucketSize, (i + 1) * bucketSize));
-        }
-        return buckets;
+        return d3.range(0, numberOfBuckets).map((i) => {
+            return data.slice(i * bucketSize, (i + 1) * bucketSize);
+        });
     };
 
     bucket.bucketSize = function(x) {

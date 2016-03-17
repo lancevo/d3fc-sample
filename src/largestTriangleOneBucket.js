@@ -36,9 +36,7 @@ export default function() {
 
         var xyData = data.map((point) => [x(point), y(point)]);
 
-        var pointAreas = [];
-
-        for (var i = 1; i < xyData.length - 1; i++) {
+        var pointAreas = d3.range(1, xyData.length - 1).map((i) => {
             var lastPoint = xyData[i - 1];
             var thisPoint = xyData[i];
             var nextPoint = xyData[i + 1];
@@ -46,10 +44,8 @@ export default function() {
             var base = (lastPoint[0] - nextPoint[0]) * (thisPoint[1] - lastPoint[1]);
             var height = (lastPoint[0] - thisPoint[0]) * (nextPoint[1] - lastPoint[1]);
 
-            var area = Math.abs(0.5 * base * height);
-
-            pointAreas.push(area);
-        }
+            return Math.abs(0.5 * base * height);
+        });
 
         return pointAreas;
     }
