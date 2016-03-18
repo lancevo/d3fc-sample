@@ -6,7 +6,7 @@ var width = 700;
 var height = 350;
 var itemWidth = 60;
 var itemHeight = 20;
-var strategy = strategyInterceptor(fc_sample.modeMedian());
+var strategy = strategyInterceptor(fc_sample.modeMedian().value(function(d) { return d.y; }));
 var data = [];
 
 // we intercept the strategy in order to capture the final layout and compute statistics
@@ -126,6 +126,8 @@ d3.select('#strategy-selector')
             if (strategyName !== 'modeMedian') {
                 strategy.x(function(d) { return d.x; })
                     .y(function(d) { return d.y; });
+            } else {
+                strategy.value(function(d) { return d.y; });
             }
         }
         strategy = strategyInterceptor(strategy);

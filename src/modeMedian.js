@@ -13,24 +13,27 @@ export default function() {
             return data;
         }
 
-        var minMax = d3.extent(data);
+        var minMax = d3.extent(data, value);
         var buckets = dataBucketer(data.slice(1, data.length - 1));
 
         var subsampledData = buckets.map((thisBucket, i) => {
 
             var frequencies = {};
             var mostFrequent;
+            var mostFrequentIndex;
             var singleMostFrequent = true;
 
             var values = thisBucket.map(value);
-            var globalMinMax = values.filter((item) => {
-                return item === minMax[0] || item === minMax[1];
-            })[0];
+
+            var globalMinMax = values.filter((value) => {
+                return value === minMax[0] || value === minMax[1];
+            }).map((value) => values.indexOf(value))[0];
+
             if (globalMinMax !== undefined) {
-                return globalMinMax;
+                return thisBucket[globalMinMax];
             }
 
-            values.forEach((item) => {
+            values.forEach((item, i) => {
                 if (frequencies[item] === undefined) {
                     frequencies[item] = 0;
                 }
@@ -38,6 +41,7 @@ export default function() {
 
                 if (frequencies[item] > frequencies[mostFrequent] || mostFrequent === undefined) {
                     mostFrequent = item;
+                    mostFrequentIndex = i;
                     singleMostFrequent = true;
                 } else if (frequencies[item] === frequencies[mostFrequent]) {
                     singleMostFrequent = false;
@@ -45,7 +49,7 @@ export default function() {
             });
 
             if (singleMostFrequent) {
-                return mostFrequent;
+                return thisBucket[mostFrequentIndex];
             } else {
                 return thisBucket[Math.floor(thisBucket.length / 2)];
             }
