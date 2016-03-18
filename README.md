@@ -64,7 +64,7 @@ Denotes the amount of data points for each bucket. The first and last data point
 
 **modeMedian**(*data*)
 
-Subsamples the data, returning the subsampled data. Then, it selects the mode (if it exists), or the median value.
+Runs the subsampler. It returns the subsampled data (it doesn't modify the `data` array itself). The subsampler selects the mode (if it exists), or the median value.
 
 ## Largest Triangle
 
@@ -96,4 +96,4 @@ Denotes the amount of data points for each bucket. The first and last data point
 
 **largestTriangle**(*data*)
 
-Subsamples the data, returning the subsampled data. Then, it selects the mode (if it exists), or the median value.
+Runs the subsampler. It returns the subsampled data (it doesn't modify the `data` array itself). The subsampler selects the point in the bucket with the largest area between two other points (determined by algorithm).
