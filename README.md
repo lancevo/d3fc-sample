@@ -97,3 +97,33 @@ Denotes the amount of data points for each bucket. The first and last data point
 **largestTriangle**(*data*)
 
 Runs the subsampler. It returns the subsampled data (it doesn't modify the `data` array itself). The subsampler selects the point in the bucket with the largest area between two other points (determined by algorithm).
+
+## Bucket
+
+d3fc-sample also comes with a data bucket utility, used by the algorithms. It partitions data into evenly-sized chunks, with the first and last bucket being their own.
+
+*fc.data.sampler*.**bucket**()
+
+Construct a data bucket utility instance.
+
+---
+
+*bucket*.**bucketSize**(*size*)
+
+Denotes the amount of data points for each bucket. The first and last data points are always their own bucket. The second-last bucket will be of size `(data.length - 2) % size`.
+
+---
+
+**bucket**(*data*)
+
+Partitions the data into evenly sized buckets, in the form:
+
+```
+[
+    [data[0]],
+    [data[1], data[2], ..., data[n]],
+    [data[n + 1], data[n + 2], ..., data[2n]],
+    ...
+    [data[data.length - 1]]
+]
+```
