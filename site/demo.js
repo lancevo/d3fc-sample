@@ -8,6 +8,17 @@ var itemWidth = 60;
 var itemHeight = 20;
 var strategy = strategyInterceptor(fc_sample.modeMedian().value(function(d) { return d.y; }));
 var data = [];
+var ukData = [];
+
+d3.json("uk.json", function(error, uk) {
+    var mesh = topojson.mesh(uk);
+    ukData = mesh.coordinates[62].map(function(d) {
+        return {
+            x: d[0],
+            y: d[1]
+        };
+    });
+});
 
 // we intercept the strategy in order to capture the final layout and compute statistics
 function strategyInterceptor(strategy) {
@@ -25,6 +36,10 @@ function strategyInterceptor(strategy) {
     };
     d3.rebind(interceptor, strategy, 'bucketSize');
     return interceptor;
+}
+
+function setMap() {
+    data = ukData;
 }
 
 function generateData(generator) {
@@ -155,8 +170,10 @@ d3.selectAll('#data-form .btn')
         var name = d3.event.target.name;
         if (name === 'chart') {
             generateData(chartGenerator());
-        } else {
+        } else if (name === 'circle') {
             generateData(circleGenerator());
+        } else {
+            setMap();
         }
         render();
         updateBucketInfo();
