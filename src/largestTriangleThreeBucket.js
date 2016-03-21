@@ -27,30 +27,25 @@ export default function() {
 
         var subsampledData = buckets.map((thisBucket, i) => {
 
-            var highestArea = -Infinity;
-            var highestItem;
             var nextAvgX = d3.mean(allBuckets[i + 1], x);
             var nextAvgY = d3.mean(allBuckets[i + 1], y);
 
-            thisBucket.forEach((item, j) => {
-                var thisX = x(item);
-                var thisY = y(item);
+            var xyData = thisBucket.map((item) => [x(item), y(item)]);
 
-                var base = (lastSelectedX - nextAvgX) * (thisY - lastSelectedY);
-                var height = (lastSelectedX - thisX) * (nextAvgY - lastSelectedY);
+            var areas = xyData.map((item) => {
+                var base = (lastSelectedX - nextAvgX) * (item[1] - lastSelectedY);
+                var height = (lastSelectedX - item[0]) * (nextAvgY - lastSelectedY);
 
-                var area = Math.abs(0.5 * base * height);
-
-                if (area > highestArea) {
-                    highestArea = area;
-                    highestItem = thisBucket[j];
-                }
+                return Math.abs(0.5 * base * height);
             });
 
-            lastSelectedX = x(highestItem);
-            lastSelectedY = y(highestItem);
+            var highestIndex = areas.indexOf(d3.max(areas));
+            var highestXY = xyData[highestIndex];
 
-            return highestItem;
+            lastSelectedX = highestXY[0];
+            lastSelectedY = highestXY[1];
+
+            return thisBucket[highestIndex];
         });
 
         // First and last data points are their own buckets.
