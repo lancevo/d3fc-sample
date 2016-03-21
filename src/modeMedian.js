@@ -24,9 +24,8 @@ export default function() {
 
             var values = thisBucket.map(value);
 
-            var globalMinMax = values.filter((value) => {
-                return value === minMax[0] || value === minMax[1];
-            }).map((value) => values.indexOf(value))[0];
+            var globalMinMax = values.filter((value) => value === minMax[0] || value === minMax[1])
+                                    .map((value) => values.indexOf(value))[0];
 
             if (globalMinMax !== undefined) {
                 return thisBucket[globalMinMax];
