@@ -1,11 +1,10 @@
 import d3 from 'd3';
-import identity from './util/identity';
 import bucket from './bucket';
 
 export default function() {
 
     var dataBucketer = bucket();
-    var value = identity;
+    var value = (d) => d;
 
     const modeMedian = (data) => {
 

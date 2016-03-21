@@ -1,11 +1,10 @@
 import d3 from 'd3';
-import identity from './util/identity';
 import bucket from './bucket';
 
 export default function() {
 
-    var x = identity;
-    var y = identity;
+    var x = (d) => d;
+    var y = (d) => d;
     var dataBucketer = bucket();
 
     const largestTriangleThreeBucket = (data) => {
